@@ -115,15 +115,15 @@ class Blockchain:
         
         self.sig = self.sk.sign(bytes_hashtx)
         
-        return bytes_hashtx
+        return self.sig, bytes_hashtx
     
     def MineBlocks(self):
         
         NewBlock = Blockchain(self.GetIndex(), self.GetTime(), self.ProofOfWork(), self.GetPrevHash(), self.GetData(), "", "", "", self.balance, "", "", "")
 
-        IV = self.signTransaction()
+        sig, IV = self.signTransaction()
         
-        self.Ver = self.vk.verify(self.sig, IV)
+        self.Ver = self.vk.verify(sig, IV)
         
         if self.Ver is False:
             raise Exception("BAD SIGNATURE")
@@ -134,6 +134,7 @@ class Blockchain:
             
             self.TransactionsList = []
         
+        print(sig)
         print(IV)
         print(self.Ver)
         
